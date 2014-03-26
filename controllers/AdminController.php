@@ -3,7 +3,7 @@
 class AdminController extends Controller
 {
 	public $defaultAction = 'admin';
-	public $layout='//layouts/column2';
+	public $layout = '//layouts/column2';
 	
 	private $_model;
 
@@ -12,10 +12,11 @@ class AdminController extends Controller
 	 */
 	public function filters()
 	{
-		return CMap::mergeArray(parent::filters(),array(
+		return CMap::mergeArray(parent::filters(), [
 			'accessControl', // perform access control for CRUD operations
-		));
+		]);
 	}
+
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -23,29 +24,31 @@ class AdminController extends Controller
 	 */
 	public function accessRules()
 	{
-		return array(
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','view'),
-				'users'=>UserModule::getAdmins(),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
+		return [
+			['allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions' => ['admin', 'delete', 'create', 'update', 'view'],
+				'users' => UserModule::getAdmins(),
+			],
+			['deny',  // deny all users
+				'users' => ['*'],
+			],
+		];
 	}
+
 	/**
 	 * Manages all models.
 	 */
 	public function actionAdmin()
 	{
-		$model=new User('search');
+		$model = new User('search');
         $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['User']))
-            $model->attributes=$_GET['User'];
+        if (isset($_GET['User'])) {
+            $model->attributes = $_GET['User'];
+        }
 
-        $this->render('index',array(
-            'model'=>$model,
-        ));
+        $this->render('index', [
+            'model' => $model,
+        ]);
 		/*$dataProvider=new CActiveDataProvider('User', array(
 			'pagination'=>array(
 				'pageSize'=>Yii::app()->controller->module->user_page_size,
@@ -57,16 +60,15 @@ class AdminController extends Controller
 		));//*/
 	}
 
-
 	/**
 	 * Displays a particular model.
 	 */
 	public function actionView()
 	{
 		$model = $this->loadModel();
-		$this->render('view',array(
-			'model'=>$model,
-		));
+		$this->render('view', [
+			'model' => $model,
+		]);
 	}
 
 	/**
@@ -75,29 +77,32 @@ class AdminController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new User;
-		$profile=new Profile;
-		$this->performAjaxValidation(array($model,$profile));
-		if(isset($_POST['User']))
-		{
-			$model->attributes=$_POST['User'];
-			$model->activkey=Yii::app()->controller->module->encrypting(microtime().$model->password);
-			$profile->attributes=$_POST['Profile'];
-			$profile->user_id=0;
-			if($model->validate()&&$profile->validate()) {
-				$model->password=Yii::app()->controller->module->encrypting($model->password);
-				if($model->save()) {
-					$profile->user_id=$model->id;
+		$model = new User;
+		$profile = new Profile;
+		$this->performAjaxValidation([$model, $profile]);
+
+		if (isset($_POST['User'])) {
+			$model->attributes = $_POST['User'];
+			$model->activkey = Yii::app()->controller->module->encrypting(microtime() . $model->password);
+			$profile->attributes = $_POST['Profile'];
+			$profile->user_id = 0;
+			if ($model->validate() && $profile->validate()) {
+				$model->password = Yii::app()->controller->module->encrypting($model->password);
+				if ($model->save()) {
+					$profile->user_id = $model->id;
 					$profile->save();
 				}
-				$this->redirect(array('view','id'=>$model->id));
-			} else $profile->validate();
+
+				$this->redirect(['view', 'id' => $model->id]);
+			} else {
+				$profile->validate();
+			}
 		}
 
-		$this->render('create',array(
-			'model'=>$model,
-			'profile'=>$profile,
-		));
+		$this->render('create', [
+			'model' => $model,
+			'profile' => $profile,
+		]);
 	}
 
 	/**
@@ -106,32 +111,32 @@ class AdminController extends Controller
 	 */
 	public function actionUpdate()
 	{
-		$model=$this->loadModel();
-		$profile=$model->profile;
-		$this->performAjaxValidation(array($model,$profile));
-		if(isset($_POST['User']))
-		{
-			$model->attributes=$_POST['User'];
-			$profile->attributes=$_POST['Profile'];
+		$model = $this->loadModel();
+		$profile = $model->profile;
+		$this->performAjaxValidation([$model, $profile]);
+		if (isset($_POST['User'])) {
+			$model->attributes = $_POST['User'];
+			$profile->attributes = $_POST['Profile'];
 			
-			if($model->validate()&&$profile->validate()) {
+			if ($model->validate() && $profile->validate()) {
 				$old_password = User::model()->notsafe()->findByPk($model->id);
-				if ($old_password->password!=$model->password) {
-					$model->password=Yii::app()->controller->module->encrypting($model->password);
-					$model->activkey=Yii::app()->controller->module->encrypting(microtime().$model->password);
+				if ($old_password->password != $model->password) {
+					$model->password = Yii::app()->controller->module->encrypting($model->password);
+					$model->activkey = Yii::app()->controller->module->encrypting(microtime() . $model->password);
 				}
 				$model->save();
 				$profile->save();
-				$this->redirect(array('view','id'=>$model->id));
-			} else $profile->validate();
+				$this->redirect(['view', 'id' => $model->id]);
+			} else {
+				$profile->validate();
+			}
 		}
 
-		$this->render('update',array(
-			'model'=>$model,
-			'profile'=>$profile,
-		));
+		$this->render('update', [
+			'model' => $model,
+			'profile' => $profile,
+		]);
 	}
-
 
 	/**
 	 * Deletes a particular model.
@@ -139,23 +144,24 @@ class AdminController extends Controller
 	 */
 	public function actionDelete()
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
+		if (Yii::app()->request->isPostRequest) {
 			// we only allow deletion via POST request
 			$model = $this->loadModel();
 			$profile = Profile::model()->findByPk($model->id);
 			
 			// Make sure profile exists
-			if ($profile)
+			if ($profile) {
 				$profile->delete();
+			}
 
 			$model->delete();
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_POST['ajax']))
-				$this->redirect(array('/user/admin'));
+			if (!isset($_POST['ajax'])) {
+				$this->redirect(['/user/admin']);
+			}
+		} else {
+			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
 		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
 	
 	/**
@@ -164,13 +170,11 @@ class AdminController extends Controller
      */
     protected function performAjaxValidation($validate)
     {
-        if(isset($_POST['ajax']) && $_POST['ajax']==='user-form')
-        {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'user-form') {
             echo CActiveForm::validate($validate);
             Yii::app()->end();
         }
-    }
-	
+    }	
 	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
@@ -178,13 +182,16 @@ class AdminController extends Controller
 	 */
 	public function loadModel()
 	{
-		if($this->_model===null)
-		{
-			if(isset($_GET['id']))
-				$this->_model=User::model()->notsafe()->findbyPk($_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,'The requested page does not exist.');
+		if ($this->_model === null) {
+			if (isset($_GET['id'])) {
+				$this->_model = User::model()->notsafe()->findbyPk($_GET['id']);
+			}
+
+			if ($this->_model === null) {
+				throw new CHttpException(404, 'The requested page does not exist.');
+			}
 		}
+
 		return $this->_model;
 	}
 	

@@ -2,12 +2,12 @@
 
 class User extends CActiveRecord
 {
-	const STATUS_NOACTIVE=0;
-	const STATUS_ACTIVE=1;
-	const STATUS_BANNED=-1;
+	const STATUS_NOACTIVE = 0;
+	const STATUS_ACTIVE = 1;
+	const STATUS_BANNED = -1;
 	
 	//TODO: Delete for next version (backward compatibility)
-	const STATUS_BANED=-1;
+	const STATUS_BANED = -1;
 	
 	/**
 	 * The followings are the available columns in table 'users':
@@ -28,7 +28,7 @@ class User extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * @return CActiveRecord the static model class
 	 */
-	public static function model($className=__CLASS__)
+	public static function model($className = __CLASS__)
 	{
 		return parent::model($className);
 	}
@@ -48,28 +48,30 @@ class User extends CActiveRecord
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.CConsoleApplication
-		return ((get_class(Yii::app())=='CConsoleApplication' || (get_class(Yii::app())!='CConsoleApplication' && Yii::app()->getModule('user')->isAdmin()))?array(
-			array('username', 'length', 'max'=>20, 'min' => 3,'message' => UserModule::t("Incorrect username (length between 3 and 20 characters).")),
-			array('password', 'length', 'max'=>128, 'min' => 4,'message' => UserModule::t("Incorrect password (minimal length 4 symbols).")),
-			array('email', 'email'),
-			array('username', 'unique', 'message' => UserModule::t("This user's name already exists.")),
-			array('email', 'unique', 'message' => UserModule::t("This user's email address already exists.")),
-			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => UserModule::t("Incorrect symbols (A-z0-9).")),
-			array('status', 'in', 'range'=>array(self::STATUS_NOACTIVE,self::STATUS_ACTIVE,self::STATUS_BANNED)),
-			array('superuser', 'in', 'range'=>array(0,1)),
-            array('create_at', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
-            array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
-			array('username, email, superuser, status', 'required'),
-			array('superuser, status', 'numerical', 'integerOnly'=>true),
-			array('id, username, password, email, activkey, create_at, lastvisit_at, superuser, status', 'safe', 'on'=>'search'),
-		):((Yii::app()->user->id==$this->id)?array(
-			array('username, email', 'required'),
-			array('username', 'length', 'max'=>20, 'min' => 3,'message' => UserModule::t("Incorrect username (length between 3 and 20 characters).")),
-			array('email', 'email'),
-			array('username', 'unique', 'message' => UserModule::t("This user's name already exists.")),
-			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => UserModule::t("Incorrect symbols (A-z0-9).")),
-			array('email', 'unique', 'message' => UserModule::t("This user's email address already exists.")),
-		):array()));
+		return (((get_class(Yii::app()) == 'CConsoleApplication') 
+			|| ((get_class(Yii::app()) != 'CConsoleApplication') 
+			&& Yii::app()->getModule('user')->isAdmin())) ? [
+			['username', 'length', 'max' => 20, 'min' => 3,'message' => UserModule::t("Incorrect username (length between 3 and 20 characters).")],
+			['password', 'length', 'max' => 128, 'min' => 4,'message' => UserModule::t("Incorrect password (minimal length 4 symbols).")],
+			['email', 'email'],
+			['username', 'unique', 'message' => UserModule::t("This user's name already exists.")],
+			['email', 'unique', 'message' => UserModule::t("This user's email address already exists.")],
+			['username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => UserModule::t("Incorrect symbols (A-z0-9).")],
+			['status', 'in', 'range' => [self::STATUS_NOACTIVE, self::STATUS_ACTIVE, self::STATUS_BANNED]],
+			['superuser', 'in', 'range' => [0, 1]],
+            ['create_at', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'],
+            ['lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'],
+			['username, email, superuser, status', 'required'],
+			['superuser, status', 'numerical', 'integerOnly' => true],
+			['id, username, password, email, activkey, create_at, lastvisit_at, superuser, status', 'safe', 'on' => 'search'],
+		] : ((Yii::app()->user->id == $this->id) ? [
+			['username, email', 'required'],
+			['username', 'length', 'max' => 20, 'min' => 3, 'message' => UserModule::t("Incorrect username (length between 3 and 20 characters).")],
+			['email', 'email'],
+			['username', 'unique', 'message' => UserModule::t("This user's name already exists.")],
+			['username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u', 'message' => UserModule::t("Incorrect symbols (A-z0-9).")],
+			['email', 'unique', 'message' => UserModule::t("This user's email address already exists.")],
+		] : []));
 	}
 
 	/**
@@ -78,8 +80,11 @@ class User extends CActiveRecord
 	public function relations()
 	{
         $relations = Yii::app()->getModule('user')->relations;
-        if (!isset($relations['profile']))
+
+        if (!isset($relations['profile'])) {
             $relations['profile'] = array(self::HAS_ONE, 'Profile', 'user_id');
+        }
+
         return $relations;
 	}
 
@@ -88,71 +93,72 @@ class User extends CActiveRecord
 	 */
 	public function attributeLabels()
 	{
-		return array(
+		return [
 			'id' => UserModule::t("Id"),
-			'username'=>UserModule::t("username"),
-			'password'=>UserModule::t("password"),
-			'verifyPassword'=>UserModule::t("Retype Password"),
-			'email'=>UserModule::t("E-mail"),
-			'verifyCode'=>UserModule::t("Verification Code"),
+			'username' => UserModule::t("username"),
+			'password' => UserModule::t("password"),
+			'verifyPassword' => UserModule::t("Retype Password"),
+			'email' => UserModule::t("E-mail"),
+			'verifyCode' => UserModule::t("Verification Code"),
 			'activkey' => UserModule::t("activation key"),
 			'createtime' => UserModule::t("Registration date"),
 			'create_at' => UserModule::t("Registration date"),
-			
 			'lastvisit_at' => UserModule::t("Last visit"),
 			'superuser' => UserModule::t("Superuser"),
 			'status' => UserModule::t("Status"),
-		);
+		];
 	}
 	
 	public function scopes()
     {
-        return array(
-            'active'=>array(
-                'condition'=>'status='.self::STATUS_ACTIVE,
-            ),
-            'notactive'=>array(
-                'condition'=>'status='.self::STATUS_NOACTIVE,
-            ),
-            'banned'=>array(
-                'condition'=>'status='.self::STATUS_BANNED,
-            ),
-            'superuser'=>array(
-                'condition'=>'superuser=1',
-            ),
-            'notsafe'=>array(
+        return [
+            'active' => [
+                'condition' => 'status=' . self::STATUS_ACTIVE,
+            ],
+            'notactive' => [
+                'condition' => 'status=' . self::STATUS_NOACTIVE,
+            ],
+            'banned' => [
+                'condition' => 'status=' . self::STATUS_BANNED,
+            ],
+            'superuser' => [
+                'condition' => 'superuser=1',
+            ],
+            'notsafe' => [
             	'select' => 'id, username, password, email, activkey, create_at, lastvisit_at, superuser, status',
-            ),
-        );
+            ],
+        ];
     }
 	
 	public function defaultScope()
     {
-        return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope,array(
-            'alias'=>'user',
+        return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope, [
+            'alias' => 'user',
             'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.superuser, user.status',
-        ));
+        ]);
     }
 	
-	public static function itemAlias($type,$code=NULL) {
-		$_items = array(
-			'UserStatus' => array(
+	public static function itemAlias($type, $code = NULL) {
+		$_items = [
+			'UserStatus' => [
 				self::STATUS_NOACTIVE => UserModule::t('Not active'),
 				self::STATUS_ACTIVE => UserModule::t('Active'),
 				self::STATUS_BANNED => UserModule::t('Banned'),
-			),
-			'AdminStatus' => array(
+			],
+			'AdminStatus' => [
 				'0' => UserModule::t('No'),
 				'1' => UserModule::t('Yes'),
-			),
-		);
-		if (isset($code))
+			],
+		];
+
+		if (isset($code)) {
 			return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
-		else
+		} else {
 			return isset($_items[$type]) ? $_items[$type] : false;
+		}
 	}
 	
-/**
+	/**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
@@ -161,24 +167,24 @@ class User extends CActiveRecord
         // Warning: Please modify the following code to remove attributes that
         // should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
         
-        $criteria->compare('id',$this->id);
-        $criteria->compare('username',$this->username,true);
-        $criteria->compare('password',$this->password);
-        $criteria->compare('email',$this->email,true);
-        $criteria->compare('activkey',$this->activkey);
-        $criteria->compare('create_at',$this->create_at);
-        $criteria->compare('lastvisit_at',$this->lastvisit_at);
-        $criteria->compare('superuser',$this->superuser);
-        $criteria->compare('status',$this->status);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('username', $this->username, true);
+        $criteria->compare('password', $this->password);
+        $criteria->compare('email', $this->email, true);
+        $criteria->compare('activkey', $this->activkey);
+        $criteria->compare('create_at', $this->create_at);
+        $criteria->compare('lastvisit_at', $this->lastvisit_at);
+        $criteria->compare('superuser', $this->superuser);
+        $criteria->compare('status', $this->status);
 
-        return new CActiveDataProvider(get_class($this), array(
-            'criteria'=>$criteria,
-        	'pagination'=>array(
-				'pageSize'=>Yii::app()->getModule('user')->user_page_size,
-			),
-        ));
+        return new CActiveDataProvider(get_class($this), [
+            'criteria' => $criteria,
+        	'pagination' => [
+				'pageSize' => Yii::app()->getModule('user')->user_page_size,
+			],
+        ]);
     }
 
     public function getCreatetime() {
@@ -186,7 +192,7 @@ class User extends CActiveRecord
     }
 
     public function setCreatetime($value) {
-        $this->create_at=date('Y-m-d H:i:s',$value);
+        $this->create_at=date('Y-m-d H:i:s', $value);
     }
 
     public function getLastvisit() {
@@ -194,13 +200,14 @@ class User extends CActiveRecord
     }
 
     public function setLastvisit($value) {
-        $this->lastvisit_at=date('Y-m-d H:i:s',$value);
+        $this->lastvisit_at=date('Y-m-d H:i:s', $value);
     }
 
     public function afterSave() {
-        if (get_class(Yii::app())=='CWebApplication'&&Profile::$regMode==false) {
+        if (get_class(Yii::app()) == 'CWebApplication' && Profile::$regMode == false) {
             Yii::app()->user->updateSession();
         }
+        
         return parent::afterSave();
     }
 }

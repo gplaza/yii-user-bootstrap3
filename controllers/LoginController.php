@@ -10,24 +10,25 @@ class LoginController extends Controller
 	public function actionLogin()
 	{
 		if (Yii::app()->user->isGuest) {
-			$model=new UserLogin;
+			$model = new UserLogin;
 			// collect user input data
-			if(isset($_POST['UserLogin']))
-			{
-				$model->attributes=$_POST['UserLogin'];
+			if (isset($_POST['UserLogin'])) {
+				$model->attributes = $_POST['UserLogin'];
 				// validate user input and redirect to previous page if valid
-				if($model->validate()) {
+				if ($model->validate()) {
 					$this->lastViset();
-					if (Yii::app()->getBaseUrl()."/index.php" === Yii::app()->user->returnUrl)
+					if (Yii::app()->getBaseUrl() . "/index.php" === Yii::app()->user->returnUrl) {
 						$this->redirect(Yii::app()->controller->module->returnUrl);
-					else
+					} else {
 						$this->redirect(Yii::app()->user->returnUrl);
+					}
 				}
 			}
 			// display the login form
-			$this->render('/user/login',array('model'=>$model));
-		} else
+			$this->render('/user/login', ['model' => $model]);
+		} else {
 			$this->redirect(Yii::app()->controller->module->returnUrl);
+		}
 	}
 	
 	private function lastViset() {
@@ -35,5 +36,4 @@ class LoginController extends Controller
 		$lastVisit->lastvisit_at = date('Y-m-d H:i:s');
 		$lastVisit->save();
 	}
-
 }

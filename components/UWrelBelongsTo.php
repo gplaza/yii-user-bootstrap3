@@ -2,12 +2,12 @@
 
 class UWrelBelongsTo {
 	
-	public $params = array(
-		'modelName'=>'',
-		'optionName'=>'',
-		'emptyField'=>'',
-		'relationName'=>'',
-	);
+	public $params = [
+		'modelName' => '',
+		'optionName' => '',
+		'emptyField' => '',
+		'relationName' => '',
+	];
 	
 	/**
 	 * Widget initialization
@@ -15,16 +15,16 @@ class UWrelBelongsTo {
 	 */
 	public function init() {
 		return array(
-			'name'=>__CLASS__,
-			'label'=>UserModule::t('Relation Belongs To',array(),__CLASS__),
-			'fieldType'=>array('INTEGER'),
-			'params'=>$this->params,
-			'paramsLabels' => array(
-				'modelName'=>UserModule::t('Model Name',array(),__CLASS__),
-				'optionName'=>UserModule::t('Lable field name',array(),__CLASS__),
-				'emptyField'=>UserModule::t('Empty item name',array(),__CLASS__),
-				'relationName'=>UserModule::t('Profile model relation name',array(),__CLASS__),
-			),
+			'name' => __CLASS__,
+			'label' => UserModule::t('Relation Belongs To', [], __CLASS__),
+			'fieldType' => ['INTEGER'],
+			'params' => $this->params,
+			'paramsLabels' => [
+				'modelName' => UserModule::t('Model Name', [], __CLASS__),
+				'optionName' => UserModule::t('Lable field name', [], __CLASS__),
+				'emptyField' => UserModule::t('Empty item name', [], __CLASS__),
+				'relationName' => UserModule::t('Profile model relation name', [], __CLASS__),
+			],
 		);
 	}
 	
@@ -34,7 +34,7 @@ class UWrelBelongsTo {
 	 * @param $field_varname
 	 * @return string
 	 */
-	public function setAttributes($value,$model,$field_varname) {
+	public function setAttributes($value, $model, $field_varname) {
 		return $value;
 	}
 	
@@ -43,18 +43,19 @@ class UWrelBelongsTo {
 	 * @param $field - profile fields model item
 	 * @return string
 	 */
-	public function viewAttribute($model,$field) {
+	public function viewAttribute($model, $field) {
 		$relation = $model->relations();
-		if ($this->params['relationName']&&isset($relation[$this->params['relationName']])) {
+		if ($this->params['relationName'] && isset($relation[$this->params['relationName']])) {
 			$m = $model->__get($this->params['relationName']);
 		} else {
 			$m = CActiveRecord::model($this->params['modelName'])->findByPk($model->getAttribute($field->varname));
 		}
 		
-		if ($m)
-			return (($this->params['optionName'])?$m->getAttribute($this->params['optionName']):$m->id);
-		else
+		if ($m) {
+			return (($this->params['optionName']) ? $m->getAttribute($this->params['optionName']) : $m->id);
+		} else {
 			return $this->params['emptyField'];
+		}
 		
 	}
 	
@@ -64,14 +65,17 @@ class UWrelBelongsTo {
 	 * @param $params - htmlOptions
 	 * @return string
 	 */
-	public function editAttribute($model,$field,$htmlOptions=array()) {
-		$list = array();
-		if ($this->params['emptyField']) $list[0] = $this->params['emptyField'];
+	public function editAttribute($model, $field, $htmlOptions = []) {
+		$list = [];
+		if ($this->params['emptyField']) {
+			$list[0] = $this->params['emptyField'];
+		}
 		
 		$models = CActiveRecord::model($this->params['modelName'])->findAll();
-		foreach ($models as $m)
-			$list[$m->id] = (($this->params['optionName'])?$m->getAttribute($this->params['optionName']):$m->id);
-		return CHtml::activeDropDownList($model,$field->varname,$list,$htmlOptions=array());
+		foreach ($models as $m) {
+			$list[$m->id] = (($this->params['optionName']) ? $m->getAttribute($this->params['optionName']) : $m->id);
+		}
+
+		return CHtml::activeDropDownList($model, $field->varname, $list, $htmlOptions = []);
 	}
-	
 }
