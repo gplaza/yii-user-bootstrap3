@@ -1,27 +1,36 @@
 <?php
-$this->breadcrumbs=array(
+
+$this->breadcrumbs = [
 	UserModule::t("Users"),
-);
-if(UserModule::isAdmin()) {
-	$this->layout='//layouts/column2';
-	$this->menu=array(
-	    array('label'=>UserModule::t('Manage Users'), 'url'=>array('/user/admin')),
-	    array('label'=>UserModule::t('Manage Profile Field'), 'url'=>array('profileField/admin')),
-	);
+];
+
+if (UserModule::isAdmin()) {
+	$this->layout = '//layouts/column2';
+	$this->menu = [
+	    ['label' => UserModule::t('Manage Users'), 'url' => ['/user/admin']],
+	    ['label' => UserModule::t('Manage Profile Field'), 'url' => ['profileField/admin']],
+	];
 }
 ?>
 
-<h1><?php echo UserModule::t("List User"); ?></h1>
+<?= BsHtml::pageHeader(UserModule::t("List User")) ?>
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
-	'dataProvider'=>$dataProvider,
-	'columns'=>array(
-		array(
-			'name' => 'username',
-			'type'=>'raw',
-			'value' => 'CHtml::link(CHtml::encode($data->username),array("user/view","id"=>$data->id))',
-		),
-		'create_at',
-		'lastvisit_at',
-	),
-)); ?>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <?php $this->widget('bootstrap.widgets.BsGridView', [
+			'id' => 'usuario-grid',
+			'dataProvider' => $dataProvider,
+            'enableSorting' => false,
+            'type' => BsHtml::GRID_TYPE_BORDERED,
+			'columns' => [
+				[
+					'name' => 'username',
+					'type'=>'raw',
+					'value' => 'CHtml::link(CHtml::encode($data->username), ["user/view", "id" => $data->id])',
+				],
+				'create_at',
+				'lastvisit_at',
+			],
+        ]); ?>
+    </div>
+</div>

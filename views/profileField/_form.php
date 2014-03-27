@@ -1,125 +1,100 @@
-<div class="form">
+<?php $form = $this->beginWidget('bootstrap.widgets.BsActiveForm', [
+    'id' => 'profileField-form',
+    // Please note: When you enable ajax validation, make sure the corresponding
+    // controller action is handling ajax validation correctly.
+    // There is a call to performAjaxValidation() commented in generated controller code.
+    // See class documentation of CActiveForm for details on this.
+    'enableAjaxValidation' => false,
+    'htmlOptions' => ['enctype' => 'multipart/form-data'],
+]); ?>
 
-<?php echo CHtml::beginForm(); ?>
+    <p class="help-block"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
 
-	<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
+    <?= $form->errorSummary($model); ?>
 
-	<?php echo CHtml::errorSummary($model); ?>
-	
-	<div class="row varname">
-		<?php echo CHtml::activeLabelEx($model,'varname'); ?>
-		<?php echo (($model->id)?CHtml::activeTextField($model,'varname',array('size'=>60,'maxlength'=>50,'readonly'=>true)):CHtml::activeTextField($model,'varname',array('size'=>60,'maxlength'=>50))); ?>
-		<?php echo CHtml::error($model,'varname'); ?>
-		<p class="hint"><?php echo UserModule::t("Allowed lowercase letters and digits."); ?></p>
-	</div>
+    <?= $form->textFieldControlGroup($model, 'varname', [
+	    	'maxlength' => 50,
+	    	'readonly' => isset($model->id) ? true : false,
+	    	'help' => UserModule::t("Allowed lowercase letters and digits."),
+    ]); ?>
+    
+    <?= $form->textFieldControlGroup($model, 'title', [
+	    	'maxlength' => 255,
+	    	'help' => UserModule::t('Field name on the language of "sourceLanguage".'),
+    ]); ?>
 
-	<div class="row title">
-		<?php echo CHtml::activeLabelEx($model,'title'); ?>
-		<?php echo CHtml::activeTextField($model,'title',array('size'=>60,'maxlength'=>255)); ?>
-		<?php echo CHtml::error($model,'title'); ?>
-		<p class="hint"><?php echo UserModule::t('Field name on the language of "sourceLanguage".'); ?></p>
-	</div>
+	<?= $form->dropDownListControlGroup($model, 'field_type', ProfileField::itemAlias('field_type'), [
+			'id' => 'field_type',
+			'disabled' => isset($model->id) ? true : false,
+			'help' => UserModule::t('Field type column in the database.'),
+	]); ?> 
 
-	<div class="row field_type">
-		<?php echo CHtml::activeLabelEx($model,'field_type'); ?>
-		<?php echo (($model->id)?CHtml::activeTextField($model,'field_type',array('size'=>60,'maxlength'=>50,'readonly'=>true,'id'=>'field_type')):CHtml::activeDropDownList($model,'field_type',ProfileField::itemAlias('field_type'),array('id'=>'field_type'))); ?>
-		<?php echo CHtml::error($model,'field_type'); ?>
-		<p class="hint"><?php echo UserModule::t('Field type column in the database.'); ?></p>
-	</div>
+    <?= $form->textFieldControlGroup($model, 'field_size', [
+	    	'maxlength' => 10,
+	    	'help' => UserModule::t('Field size column in the database.'),
+    ]); ?>
 
-	<div class="row field_size">
-		<?php echo CHtml::activeLabelEx($model,'field_size'); ?>
-		<?php echo (($model->id)?CHtml::activeTextField($model,'field_size',array('readonly'=>true)):CHtml::activeTextField($model,'field_size')); ?>
-		<?php echo CHtml::error($model,'field_size'); ?>
-		<p class="hint"><?php echo UserModule::t('Field size column in the database.'); ?></p>
-	</div>
+    <?= $form->textFieldControlGroup($model, 'field_size_min', [
+	    	'maxlength' => 10,
+	    	'help' => UserModule::t('The minimum value of the field (form validator).'),
+    ]); ?>
 
-	<div class="row field_size_min">
-		<?php echo CHtml::activeLabelEx($model,'field_size_min'); ?>
-		<?php echo CHtml::activeTextField($model,'field_size_min'); ?>
-		<?php echo CHtml::error($model,'field_size_min'); ?>
-		<p class="hint"><?php echo UserModule::t('The minimum value of the field (form validator).'); ?></p>
-	</div>
+	<?= $form->dropDownListControlGroup($model, 'required', ProfileField::itemAlias('required'), [
+			'help' => UserModule::t('Required field (form validator).'),
+	]); ?> 
 
-	<div class="row required">
-		<?php echo CHtml::activeLabelEx($model,'required'); ?>
-		<?php echo CHtml::activeDropDownList($model,'required',ProfileField::itemAlias('required')); ?>
-		<?php echo CHtml::error($model,'required'); ?>
-		<p class="hint"><?php echo UserModule::t('Required field (form validator).'); ?></p>
-	</div>
+    <?= $form->textFieldControlGroup($model, 'match', [
+	    	'maxlength' => 255,
+	    	'help' => UserModule::t("Regular expression (example: '/^[A-Za-z0-9\s,]+$/u')."),
+    ]); ?>
 
-	<div class="row match">
-		<?php echo CHtml::activeLabelEx($model,'match'); ?>
-		<?php echo CHtml::activeTextField($model,'match',array('size'=>60,'maxlength'=>255)); ?>
-		<?php echo CHtml::error($model,'match'); ?>
-		<p class="hint"><?php echo UserModule::t("Regular expression (example: '/^[A-Za-z0-9\s,]+$/u')."); ?></p>
-	</div>
+    <?= $form->textFieldControlGroup($model, 'range', [
+	    	'maxlength' => 5000,
+	    	'help' => UserModule::t('Predefined values (example: 1;2;3;4;5 or 1==One;2==Two;3==Three;4==Four;5==Five).'),
+    ]); ?>
 
-	<div class="row range">
-		<?php echo CHtml::activeLabelEx($model,'range'); ?>
-		<?php echo CHtml::activeTextField($model,'range',array('size'=>60,'maxlength'=>5000)); ?>
-		<?php echo CHtml::error($model,'range'); ?>
-		<p class="hint"><?php echo UserModule::t('Predefined values (example: 1;2;3;4;5 or 1==One;2==Two;3==Three;4==Four;5==Five).'); ?></p>
-	</div>
+    <?= $form->textFieldControlGroup($model, 'error_message', [
+	    	'maxlength' => 255,
+	    	'help' => UserModule::t('Error message when you validate the form.'),
+    ]); ?>
 
-	<div class="row error_message">
-		<?php echo CHtml::activeLabelEx($model,'error_message'); ?>
-		<?php echo CHtml::activeTextField($model,'error_message',array('size'=>60,'maxlength'=>255)); ?>
-		<?php echo CHtml::error($model,'error_message'); ?>
-		<p class="hint"><?php echo UserModule::t('Error message when you validate the form.'); ?></p>
-	</div>
+    <?= $form->textFieldControlGroup($model, 'other_validator', [
+	    	'maxlength' => 255,
+	    	'help' => UserModule::t('JSON string (example: {example}).', ['{example}' => CJavaScript::jsonEncode(['file' => ['types' => 'jpg, gif, png']])]),
+    ]); ?>
 
-	<div class="row other_validator">
-		<?php echo CHtml::activeLabelEx($model,'other_validator'); ?>
-		<?php echo CHtml::activeTextField($model,'other_validator',array('size'=>60,'maxlength'=>255)); ?>
-		<?php echo CHtml::error($model,'other_validator'); ?>
-		<p class="hint"><?php echo UserModule::t('JSON string (example: {example}).',array('{example}'=>CJavaScript::jsonEncode(array('file'=>array('types'=>'jpg, gif, png'))))); ?></p>
-	</div>
+    <?= $form->textFieldControlGroup($model, 'default', [
+	    	'maxlength' => 255,
+	    	'readonly' => isset($model->id) ? true : false,
+	    	'help' => UserModule::t('The value of the default field (database).'),
+    ]); ?>
 
-	<div class="row default">
-		<?php echo CHtml::activeLabelEx($model,'default'); ?>
-		<?php echo (($model->id)?CHtml::activeTextField($model,'default',array('size'=>60,'maxlength'=>255,'readonly'=>true)):CHtml::activeTextField($model,'default',array('size'=>60,'maxlength'=>255))); ?>
-		<?php echo CHtml::error($model,'default'); ?>
-		<p class="hint"><?php echo UserModule::t('The value of the default field (database).'); ?></p>
-	</div>
-
-	<div class="row widget">
-		<?php echo CHtml::activeLabelEx($model,'widget'); ?>
-		<?php 
+	<?php 
 		list($widgetsList) = ProfileFieldController::getWidgets($model->field_type);
-		echo CHtml::activeDropDownList($model,'widget',$widgetsList,array('id'=>'widgetlist'));
-		//echo CHtml::activeTextField($model,'widget',array('size'=>60,'maxlength'=>255)); ?>
-		<?php echo CHtml::error($model,'widget'); ?>
-		<p class="hint"><?php echo UserModule::t('Widget name.'); ?></p>
-	</div>
+		echo $form->dropDownListControlGroup($model, 'widget', $widgetsList, [
+			'id' => 'widgetlist',
+			'help' => UserModule::t('Widget name.'),
+		]);	
+	?>
 
-	<div class="row widgetparams">
-		<?php echo CHtml::activeLabelEx($model,'widgetparams'); ?>
-		<?php echo CHtml::activeTextField($model,'widgetparams',array('size'=>60,'maxlength'=>5000,'id'=>'widgetparams')); ?>
-		<?php echo CHtml::error($model,'widgetparams'); ?>
-		<p class="hint"><?php echo UserModule::t('JSON string (example: {example}).',array('{example}'=>CJavaScript::jsonEncode(array('param1'=>array('val1','val2'),'param2'=>array('k1'=>'v1','k2'=>'v2'))))); ?></p>
-	</div>
+    <?= $form->textFieldControlGroup($model, 'widgetparams', [
+	    	'id' => 'widgetparams',
+	    	'maxlength' => 5000,
+	    	'help' => UserModule::t('JSON string (example: {example}).', ['{example}' => CJavaScript::jsonEncode(['param1' => ['val1', 'val2'], 'param2' => ['k1' => 'v1', 'k2' => 'v2']])]),
+    ]); ?>
 
-	<div class="row position">
-		<?php echo CHtml::activeLabelEx($model,'position'); ?>
-		<?php echo CHtml::activeTextField($model,'position'); ?>
-		<?php echo CHtml::error($model,'position'); ?>
-		<p class="hint"><?php echo UserModule::t('Display order of fields.'); ?></p>
-	</div>
+    <?= $form->textFieldControlGroup($model, 'position', [
+	    	'maxlength' => 5,
+	    	'help' => UserModule::t('Display order of fields.'),
+    ]); ?>
 
-	<div class="row visible">
-		<?php echo CHtml::activeLabelEx($model,'visible'); ?>
-		<?php echo CHtml::activeDropDownList($model,'visible',ProfileField::itemAlias('visible')); ?>
-		<?php echo CHtml::error($model,'visible'); ?>
-	</div>
+	<?= $form->dropDownListControlGroup($model, 'visible', ProfileField::itemAlias('visible')); ?> 
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? UserModule::t('Create') : UserModule::t('Save')); ?>
-	</div>
+    <?= BsHtml::submitButton($model->isNewRecord ? UserModule::t('Create') : UserModule::t('Save'), [
+    	'color' => BsHtml::BUTTON_COLOR_PRIMARY]
+    ); ?>
 
-<?php echo CHtml::endForm(); ?>
-
-</div><!-- form -->
+<?php $this->endWidget(); ?>
 <div id="dialog-form" title="<?php echo UserModule::t('Widget parametrs'); ?>">
 	<form>
 	<fieldset>

@@ -1,17 +1,17 @@
 <?php
-$this->breadcrumbs=array(
-	UserModule::t('Users')=>array('admin'),
+
+$this->breadcrumbs = [
+	UserModule::t('Users') => ['admin'],
 	UserModule::t('Create'),
-);
+];
 
-$this->menu=array(
-    array('label'=>UserModule::t('Manage Users'), 'url'=>array('admin')),
-    array('label'=>UserModule::t('Manage Profile Field'), 'url'=>array('profileField/admin')),
-    array('label'=>UserModule::t('List User'), 'url'=>array('/user')),
-);
-?>
-<h1><?php echo UserModule::t("Create User"); ?></h1>
+$this->menu = [
+    ['label' => UserModule::t('Manage Users'), 'url' => ['admin']],
+    ['label' => UserModule::t('Manage Profile Field'), 'url' => ['profileField/admin']],
+    ['label' => UserModule::t('List User'), 'url' => ['/user']],
+];
 
-<?php
-	echo $this->renderPartial('_form', array('model'=>$model,'profile'=>$profile));
 ?>
+
+<?= BsHtml::pageHeader(UserModule::t("Create User")) ?>
+<?php $this->renderPartial('_form', ['model' => $model, 'profile' => $profile]); ?>

@@ -1,21 +1,28 @@
 <?php
-$this->breadcrumbs=array(
-	UserModule::t('Profile Fields')=>array('admin'),
-	UserModule::t($model->title),
-);
-$this->menu=array(
-    array('label'=>UserModule::t('Create Profile Field'), 'url'=>array('create')),
-    array('label'=>UserModule::t('Update Profile Field'), 'url'=>array('update','id'=>$model->id)),
-    array('label'=>UserModule::t('Delete Profile Field'), 'url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>UserModule::t('Are you sure to delete this item?'))),
-    array('label'=>UserModule::t('Manage Profile Field'), 'url'=>array('admin')),
-    array('label'=>UserModule::t('Manage Users'), 'url'=>array('/user/admin')),
-);
-?>
-<h1><?php echo UserModule::t('View Profile Field #').$model->varname; ?></h1>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
+$this->breadcrumbs = [
+	UserModule::t('Profile Fields') => ['admin'],
+	UserModule::t($model->title),
+];
+
+$this->menu = [
+    ['label' => UserModule::t('Create Profile Field'), 'url' => ['create']],
+    ['label' => UserModule::t('Update Profile Field'), 'url' => ['update', 'id' => $model->id]],
+    ['label' => UserModule::t('Delete Profile Field'), 'url' => '#', 'linkOptions' => ['submit' => ['delete', 'id' => $model->id], 'confirm' => UserModule::t('Are you sure to delete this item?')]],
+    ['label' => UserModule::t('Manage Profile Field'), 'url' => ['admin']],
+    ['label' => UserModule::t('Manage Users'), 'url' => ['/user/admin']],
+];
+
+?>
+
+<?= BsHtml::pageHeader(UserModule::t('View Profile Field #') . $model->varname) ?>
+
+<?php $this->widget('zii.widgets.CDetailView', [
+	'htmlOptions' => [
+		'class' => 'table table-striped table-condensed table-hover',
+	],
+	'data' => $model,
+	'attributes' => [
 		'id',
 		'varname',
 		'title',
@@ -31,6 +38,6 @@ $this->menu=array(
 		'widgetparams',
 		'default',
 		'position',
-		'visible',
-	),
-)); ?>
+		'visible',	
+	],
+]); ?>

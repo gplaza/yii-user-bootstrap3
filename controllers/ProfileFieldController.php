@@ -331,7 +331,7 @@ class ProfileFieldController extends Controller
 			$model->attributes = $_POST['ProfileField'];
 			
 			if ($model->validate()) {
-				$sql = 'ALTER TABLE ' . Profile::model()->tableName() . ' ADD `' . $model->varname . '` ';
+				$sql = 'ALTER TABLE `' . Profile::model()->tableName() . '` ADD `' . $model->varname . '` ';
 				$sql .= $this->fieldType($model->field_type);
 				if (
 						$model->field_type != 'TEXT'
@@ -357,6 +357,7 @@ class ProfileFieldController extends Controller
 								) ? " DEFAULT ''" : (($model->field_type == 'DATE') ? " DEFAULT '0000-00-00'" : " DEFAULT 0"));
 					}
 				}
+
 				$model->dbConnection->createCommand($sql)->execute();
 				$model->save();
 				$this->redirect(['view', 'id' => $model->id]);

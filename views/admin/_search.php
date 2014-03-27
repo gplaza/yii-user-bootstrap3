@@ -1,54 +1,20 @@
-<div class="wide form">
+<?php $form = $this->beginWidget('bootstrap.widgets.BsActiveForm', [
+    'action' => Yii::app()->createUrl($this->route),
+    'method' => 'get',
+]); ?>
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-    'action'=>Yii::app()->createUrl($this->route),
-    'method'=>'get',
-)); ?>
+    <?= $form->textFieldControlGroup($model, 'id'); ?>
+    <?= $form->textFieldControlGroup($model, 'username', ['maxlength' => 20]); ?>
+    <?= $form->textFieldControlGroup($model, 'email', ['maxlength' => 128]); ?>
+    <?= $form->textFieldControlGroup($model, 'activkey', ['maxlength' => 128]); ?>
+    <?= $form->textFieldControlGroup($model, 'create_at'); ?>
+    <?= $form->textFieldControlGroup($model, 'lastvisit_at'); ?>
+    <?= $form->dropDownListControlGroup($model, 'superuser', $model->itemAlias('AdminStatus')); ?>
+    <?= $form->dropDownListControlGroup($model, 'status', $model->itemAlias('UserStatus')); ?>
 
-    <div class="row">
-        <?php echo $form->label($model,'id'); ?>
-        <?php echo $form->textField($model,'id'); ?>
-    </div>
 
-    <div class="row">
-        <?php echo $form->label($model,'username'); ?>
-        <?php echo $form->textField($model,'username',array('size'=>20,'maxlength'=>20)); ?>
-    </div>
-
-    <div class="row">
-        <?php echo $form->label($model,'email'); ?>
-        <?php echo $form->textField($model,'email',array('size'=>60,'maxlength'=>128)); ?>
-    </div>
-
-    <div class="row">
-        <?php echo $form->label($model,'activkey'); ?>
-        <?php echo $form->textField($model,'activkey',array('size'=>60,'maxlength'=>128)); ?>
-    </div>
-
-    <div class="row">
-        <?php echo $form->label($model,'create_at'); ?>
-        <?php echo $form->textField($model,'create_at'); ?>
-    </div>
-
-    <div class="row">
-        <?php echo $form->label($model,'lastvisit_at'); ?>
-        <?php echo $form->textField($model,'lastvisit_at'); ?>
-    </div>
-
-    <div class="row">
-        <?php echo $form->label($model,'superuser'); ?>
-        <?php echo $form->dropDownList($model,'superuser',$model->itemAlias('AdminStatus')); ?>
-    </div>
-
-    <div class="row">
-        <?php echo $form->label($model,'status'); ?>
-        <?php echo $form->dropDownList($model,'status',$model->itemAlias('UserStatus')); ?>
-    </div>
-
-    <div class="row buttons">
-        <?php echo CHtml::submitButton(UserModule::t('Search')); ?>
+    <div class="form-actions" style="padding-bottom: 1em;">
+        <?= BsHtml::submitButton('Buscar', ['color' => BsHtml::BUTTON_COLOR_PRIMARY,]);?>
     </div>
 
 <?php $this->endWidget(); ?>
-
-</div><!-- search-form -->
