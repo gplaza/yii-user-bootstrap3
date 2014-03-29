@@ -23,7 +23,8 @@ $this->breadcrumbs = [
 
     <?= $form->errorSummary($model); ?>
 
-    <?= $form->textFieldControlGroup($model, 'login_or_email', ['maxlength' => 128], [
+    <?= $form->textFieldControlGroup($model, 'login_or_email', [
+        'maxlength' => 128,
     	'help' => UserModule::t("Please enter your login or email addres."),
     ]); ?>
 

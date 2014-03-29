@@ -125,5 +125,6 @@ return array(
     'The value of the default field (database).' => 'El valor por defecto del campo (base de datos)',
     'Display order of fields.' => 'Mostrar orden de los campos',
 	'Not visited' => 'No visitó',
+    'There was an error saving changes' => 'Se ha producido un error al guardar los cambios',
 
 );

@@ -26,10 +26,12 @@ $this->breadcrumbs = [
     <?= $form->errorSummary($model); ?>
 
     <?= $form->textFieldControlGroup($model, 'username', ['maxlength' => 20]); ?>
-    <?= $form->passwordFieldControlGroup($model, 'password', ['maxlength' => 128], [
+    <?= $form->passwordFieldControlGroup($model, 'password', [
+    	'maxlength' => 128,
     	'help' => UserModule::t("Minimal password length 4 symbols."),
     ]); ?>  
-    <?= $form->passwordFieldControlGroup($model, 'verifyPassword', ['maxlength' => 128], [
+    <?= $form->passwordFieldControlGroup($model, 'verifyPassword', [
+    	'maxlength' => 128,
     	'help' => UserModule::t("Minimal password length 4 symbols."),
     ]); ?>  
     <?= $form->emailFieldControlGroup($model, 'email', ['maxlength' => 128]); ?> 
@@ -57,9 +59,10 @@ $this->breadcrumbs = [
 		<div class="row">
 			<?php $this->widget('CCaptcha'); ?>
 		</div>
-		<?= $form->textFieldControlGroup($model, 'verifyCode', ['maxlength' => 10], [
-				'help' => UserModule::t("Please enter the letters as they are shown in the image above.") . '\n' .
-						UserModule::t("Letters are not case-sensitive."),
+		<?= $form->textFieldControlGroup($model, 'verifyCode', [
+			'maxlength' => 10,
+			'help' => UserModule::t("Please enter the letters as they are shown in the image above.") . '\n' .
+					UserModule::t("Letters are not case-sensitive."),
 		]); ?>			
 	<?php endif; ?>
 

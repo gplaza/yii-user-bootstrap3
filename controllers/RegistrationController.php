@@ -78,6 +78,8 @@ class RegistrationController extends Controller
                             }
                             $this->refresh();
                         }
+                    } else {
+                        Yii::app()->user->setFlash('error', UserModule::t('There was an error saving changes'));
                     }
                 } else {
                     $profile->validate();

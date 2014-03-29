@@ -23,11 +23,13 @@ $this->breadcrumbs = [
 
     <?= $form->errorSummary($model); ?>
 
-    <?= $form->passwordFieldControlGroup($model, 'password', ['maxlength' => 128], [
+    <?= $form->passwordFieldControlGroup($model, 'password', [
+        'maxlength' => 128,
     	'help' => UserModule::t("Minimal password length 4 symbols."),
     ]); ?>    
 
-    <?= $form->passwordFieldControlGroup($model, 'verifyPassword', ['maxlength' => 128], [
+    <?= $form->passwordFieldControlGroup($model, 'verifyPassword', [
+        'maxlength' => 128,
     	'help' => UserModule::t("Minimal password length 4 symbols."),
     ]); ?>   
 
