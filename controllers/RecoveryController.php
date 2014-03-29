@@ -32,7 +32,7 @@ class RecoveryController extends Controller
 						}
 					} 
 					
-					$this->render('changepassword', ['form' => $form2]);
+					$this->render('changepassword', ['model' => $form2]);
 		    	} else {
 	    			Yii::app()->user->setFlash('recoveryMessage', UserModule::t("Incorrect recovery link."));
 					$this->redirect(Yii::app()->controller->module->recoveryUrl);
@@ -62,7 +62,7 @@ class RecoveryController extends Controller
 			    	}
 			    }
 
-		    	$this->render('recovery', ['form' => $form]);
+		    	$this->render('recovery', ['model' => $form]);
 		    }
 		}
 	}

@@ -1,8 +1,9 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Login"); ?>
+<?php 
 
-<h1><?php echo $title; ?></h1>
+$this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Login"); ?>
+
+<?= BsHtml::pageHeader($title) ?>
 
 <div class="form">
-<?php echo $content; ?>
-
+	<?= $content; ?>
 </div><!-- yiiForm -->

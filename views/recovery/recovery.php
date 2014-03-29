@@ -1,33 +1,34 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Restore");
-$this->breadcrumbs=array(
-	UserModule::t("Login") => array('/user/login'),
+<?php 
+
+$this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Restore");
+$this->breadcrumbs = [
+	UserModule::t("Login") => ['/user/login'],
 	UserModule::t("Restore"),
-);
+];
 ?>
 
-<h1><?php echo UserModule::t("Restore"); ?></h1>
+<?= BsHtml::pageHeader(UserModule::t("Restore")) ?>
 
-<?php if(Yii::app()->user->hasFlash('recoveryMessage')): ?>
-<div class="success">
-<?php echo Yii::app()->user->getFlash('recoveryMessage'); ?>
-</div>
-<?php else: ?>
+<?php $form = $this->beginWidget('bootstrap.widgets.BsActiveForm', [
+    'id' => 'recovery-form',
+    // Please note: When you enable ajax validation, make sure the corresponding
+    // controller action is handling ajax validation correctly.
+    // There is a call to performAjaxValidation() commented in generated controller code.
+    // See class documentation of CActiveForm for details on this.
+    'enableAjaxValidation' => false,
+    'htmlOptions' => ['enctype' => 'multipart/form-data'],
+]); ?>
 
-<div class="form">
-<?php echo CHtml::beginForm(); ?>
+    <p class="help-block"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
 
-	<?php echo CHtml::errorSummary($form); ?>
-	
-	<div class="row">
-		<?php echo CHtml::activeLabel($form,'login_or_email'); ?>
-		<?php echo CHtml::activeTextField($form,'login_or_email') ?>
-		<p class="hint"><?php echo UserModule::t("Please enter your login or email addres."); ?></p>
-	</div>
-	
-	<div class="row submit">
-		<?php echo CHtml::submitButton(UserModule::t("Restore")); ?>
-	</div>
+    <?= $form->errorSummary($model); ?>
 
-<?php echo CHtml::endForm(); ?>
-</div><!-- form -->
-<?php endif; ?>
+    <?= $form->textFieldControlGroup($model, 'login_or_email', ['maxlength' => 128], [
+    	'help' => UserModule::t("Please enter your login or email addres."),
+    ]); ?>
+
+    <?= BsHtml::submitButton(UserModule::t("Restore"), [
+    	'color' => BsHtml::BUTTON_COLOR_PRIMARY]
+    ); ?>
+
+<?php $this->endWidget(); ?>

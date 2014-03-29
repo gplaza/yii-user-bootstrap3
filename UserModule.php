@@ -228,10 +228,10 @@ class UserModule extends CWebModule
 	 */
 	public static function sendMail($email, $subject, $message) {
     	$adminEmail = Yii::app()->params['adminEmail'];
-	    $headers = "MIME-Version: 1.0\r\nFrom: $adminEmail\r\nReply-To: $adminEmail\r\nContent-Type: text/html; charset=utf-8";
+ 	    $headers = "MIME-Version: 1.0\r\nFrom: $adminEmail\r\nReply-To: $adminEmail\r\nContent-Type: text/html; charset=utf-8";
 	    $message = wordwrap($message, 70);
 	    $message = str_replace("\n.", "\n..", $message);
-	    return mail($email, '=?UTF-8?B?' . base64_encode($subject) . '?=', $message, $headers);
+	    return mail($email, '=?UTF-8?B?' . base64_encode($subject) . '?=', $message, $headers);   		
 	}
 
     /**
@@ -242,8 +242,9 @@ class UserModule extends CWebModule
         if (!$from) {
         	$from = Yii::app()->params['adminEmail'];
         }
-        $headers = "From: " . $from . "\r\nReply-To: " . Yii::app()->params['adminEmail'];
-        return mail($user->email, '=?UTF-8?B?' . base64_encode($subject) . '?=', $message, $headers);
+
+		$headers = "From: " . $from . "\r\nReply-To: " . Yii::app()->params['adminEmail'];
+		return mail($user->email, '=?UTF-8?B?' . base64_encode($subject) . '?=', $message, $headers);
     }
 	
 	/**

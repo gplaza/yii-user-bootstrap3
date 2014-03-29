@@ -1,56 +1,53 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
-$this->breadcrumbs=array(
-	UserModule::t("Profile"),
-);
-$this->menu=array(
-	((UserModule::isAdmin())
-		?array('label'=>UserModule::t('Manage Users'), 'url'=>array('/user/admin'))
-		:array()),
-    array('label'=>UserModule::t('List User'), 'url'=>array('/user')),
-    array('label'=>UserModule::t('Edit'), 'url'=>array('edit')),
-    array('label'=>UserModule::t('Change password'), 'url'=>array('changepassword')),
-    array('label'=>UserModule::t('Logout'), 'url'=>array('/user/logout')),
-);
-?><h1><?php echo UserModule::t('Your profile'); ?></h1>
+<?php 
 
-<?php if(Yii::app()->user->hasFlash('profileMessage')): ?>
-<div class="success">
-	<?php echo Yii::app()->user->getFlash('profileMessage'); ?>
-</div>
-<?php endif; ?>
-<table class="dataGrid">
-	<tr>
-		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('username')); ?></th>
+$this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Profile");
+$this->breadcrumbs = [
+	UserModule::t("Profile"),
+];
+
+$this->menu = [
+	((UserModule::isAdmin()) ? ['label' => UserModule::t('Manage Users'), 'url' => ['/user/admin']] : []),
+    ['label' => UserModule::t('List User'), 'url' => ['/user']],
+    ['label' => UserModule::t('Edit'), 'url' => ['edit']],
+    ['label' => UserModule::t('Change password'), 'url' => ['changepassword']],
+    ['label' => UserModule::t('Logout'), 'url' => ['/user/logout']],
+]; 
+
+?>
+
+<?= BsHtml::pageHeader(UserModule::t('Your profile')) ?>
+
+<table class="table table-striped table-condensed table-hover">
+	<tr class="odd">
+		<th><?php echo CHtml::encode($model->getAttributeLabel('username')); ?></th>
 	    <td><?php echo CHtml::encode($model->username); ?></td>
 	</tr>
 	<?php 
-		$profileFields=ProfileField::model()->forOwner()->sort()->findAll();
-		if ($profileFields) {
-			foreach($profileFields as $field) {
-				//echo "<pre>"; print_r($profile); die();
-			?>
-	<tr>
-		<th class="label"><?php echo CHtml::encode(UserModule::t($field->title)); ?></th>
-    	<td><?php echo (($field->widgetView($profile))?$field->widgetView($profile):CHtml::encode((($field->range)?Profile::range($field->range,$profile->getAttribute($field->varname)):$profile->getAttribute($field->varname)))); ?></td>
-	</tr>
-			<?php
-			}//$profile->getAttribute($field->varname)
-		}
+		if ($profileFields = ProfileField::model()->forOwner()->sort()->findAll()):
+			foreach($profileFields as $key => $field):
 	?>
-	<tr>
-		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('email')); ?></th>
+		<tr class="<?php echo ($key % 2 == 0) ? 'odd' : 'even'; ?>">
+			<th><?php echo CHtml::encode(UserModule::t($field->title)); ?></th>
+	    	<td><?php echo (($field->widgetView($profile))?$field->widgetView($profile):CHtml::encode((($field->range)?Profile::range($field->range,$profile->getAttribute($field->varname)):$profile->getAttribute($field->varname)))); ?></td>
+		</tr>
+	<?php
+			endforeach;
+		endif;
+	?>
+	<tr class="even">
+		<th><?php echo CHtml::encode($model->getAttributeLabel('email')); ?></th>
     	<td><?php echo CHtml::encode($model->email); ?></td>
 	</tr>
-	<tr>
-		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('create_at')); ?></th>
+	<tr class="odd">
+		<th><?php echo CHtml::encode($model->getAttributeLabel('create_at')); ?></th>
     	<td><?php echo $model->create_at; ?></td>
 	</tr>
-	<tr>
-		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('lastvisit_at')); ?></th>
+	<tr class="even">
+		<th><?php echo CHtml::encode($model->getAttributeLabel('lastvisit_at')); ?></th>
     	<td><?php echo $model->lastvisit_at; ?></td>
 	</tr>
-	<tr>
-		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('status')); ?></th>
+	<tr class="odd">
+		<th><?php echo CHtml::encode($model->getAttributeLabel('status')); ?></th>
     	<td><?php echo CHtml::encode(User::itemAlias("UserStatus",$model->status)); ?></td>
 	</tr>
 </table>
