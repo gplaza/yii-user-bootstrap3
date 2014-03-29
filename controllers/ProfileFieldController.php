@@ -557,7 +557,7 @@ class ProfileFieldController extends Controller
 		$model = new $post['model'];
 		$data = CHtml::listData($model->findAll($post['varname'] . '=:' . $post['varname'], [':' . $post['varname'] => $post[$post['varname']]]), 'id', $post['optionDestName']);
 		echo CHtml::tag('option', ['value' => ''], CHtml::encode('Seleccione...'), true);
-		foreach ($data AS $value=>$name) {
+		foreach ($data AS $value => $name) {
 			echo CHtml::tag('option', ['value' => $value], CHtml::encode($name), true);
 		}
 	}

@@ -32,7 +32,7 @@ class ProfileController extends Controller
 		
 		// ajax validator
 		if (isset($_POST['ajax']) && $_POST['ajax'] === 'profile-form') {
-			echo UActiveForm::validate([$model,$profile]);
+			echo UActiveForm::validate([$model, $profile]);
 			Yii::app()->end();
 		}
 		

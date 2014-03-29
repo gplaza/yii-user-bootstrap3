@@ -96,7 +96,7 @@ class UserModule extends CWebModule
 	public $tableProfileFields = '{{profiles_fields}}';
 
     public $defaultScope = [
-            'with' => ['profile'],
+    	'with' => ['profile'],
     ];
 	
 	static private $_user;
@@ -239,7 +239,9 @@ class UserModule extends CWebModule
      */
     public function sendMailToUser($user_id, $subject, $message, $from = '') {
         $user = User::model()->findbyPk($user_id);
-        if (!$from) $from = Yii::app()->params['adminEmail'];
+        if (!$from) {
+        	$from = Yii::app()->params['adminEmail'];
+        }
         $headers = "From: " . $from . "\r\nReply-To: " . Yii::app()->params['adminEmail'];
         return mail($user->email, '=?UTF-8?B?' . base64_encode($subject) . '?=', $message, $headers);
     }
