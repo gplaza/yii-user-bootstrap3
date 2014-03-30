@@ -360,8 +360,11 @@ class ProfileFieldController extends Controller
 
 				$model->dbConnection->createCommand($sql)->execute();
 				$model->save();
+				Yii::app()->user->setFlash('success', UserModule::t("Changes is saved."));
 				$this->redirect(['view', 'id' => $model->id]);
 			}
+
+			Yii::app()->user->setFlash('error', UserModule::t('There was an error saving changes'));
 		}
 		
 		$this->registerScript();
@@ -380,7 +383,10 @@ class ProfileFieldController extends Controller
 		if (isset($_POST['ProfileField'])) {
 			$model->attributes = $_POST['ProfileField'];
 			if($model->save()) {
+				Yii::app()->user->setFlash('success', UserModule::t("Changes is saved."));
 				$this->redirect(['view', 'id' => $model->id]);
+			} else {
+				Yii::app()->user->setFlash('error', UserModule::t('There was an error saving changes'));
 			}
 		}
 		$this->registerScript();
@@ -472,19 +478,6 @@ class ProfileFieldController extends Controller
         $this->render('admin', [
             'model' => $model,
         ]);
-		/*
-		$dataProvider=new CActiveDataProvider('ProfileField', array(
-			'pagination'=>array(
-				'pageSize'=>Yii::app()->controller->module->fields_page_size,
-			),
-			'sort'=>array(
-				'defaultOrder'=>'position',
-			),
-		));
-
-		$this->render('admin',array(
-			'dataProvider'=>$dataProvider,
-		));//*/
 	}
 
 	/**
