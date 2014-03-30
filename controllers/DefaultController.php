@@ -22,7 +22,7 @@ class DefaultController extends Controller
 	{
 		return [
 			['allow',  // allow all users to perform 'index' and 'view' actions
-				'actions' => ['index', 'view'],
+				'actions' => ['index'],
 				'users' => UserModule::getAdmins(),
 			],
 			['deny',  // deny all users
@@ -30,7 +30,7 @@ class DefaultController extends Controller
 			],
 		];
 	}	
-	
+
 	/**
 	 * Lists all models.
 	 */

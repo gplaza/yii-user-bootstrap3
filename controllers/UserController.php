@@ -26,9 +26,13 @@ class UserController extends Controller
 	{
 		return [
 			['allow',  // allow all users to perform 'index' and 'view' actions
-				'actions' => ['index', 'view'],
+				'actions' => ['index'],
 				'users' => UserModule::getAdmins(),
 			],
+			['allow',  // allow all users to perform 'index' and 'view' actions
+				'actions' => ['view'],
+				'users' => ['@'],
+			],			
 			['deny',  // deny all users
 				'users' => ['*'],
 			],
