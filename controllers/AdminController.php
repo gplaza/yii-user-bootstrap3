@@ -49,15 +49,6 @@ class AdminController extends Controller
         $this->render('index', [
             'model' => $model,
         ]);
-		/*$dataProvider=new CActiveDataProvider('User', array(
-			'pagination'=>array(
-				'pageSize'=>Yii::app()->controller->module->user_page_size,
-			),
-		));
-
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));//*/
 	}
 
 	/**
@@ -91,12 +82,13 @@ class AdminController extends Controller
 				if ($model->save()) {
 					$profile->user_id = $model->id;
 					$profile->save();
+					Yii::app()->user->setFlash('success', UserModule::t("Changes is saved."));
+					$this->redirect(['view', 'id' => $model->id]);
 				}
-
-				$this->redirect(['view', 'id' => $model->id]);
 			} else {
 				$profile->validate();
 			}
+			Yii::app()->user->setFlash('error', UserModule::t('There was an error saving changes'));
 		}
 
 		$this->render('create', [
@@ -126,8 +118,10 @@ class AdminController extends Controller
 				}
 				$model->save();
 				$profile->save();
+				Yii::app()->user->setFlash('success', UserModule::t("Changes is saved."));
 				$this->redirect(['view', 'id' => $model->id]);
 			} else {
+				Yii::app()->user->setFlash('error', UserModule::t('There was an error saving changes'));
 				$profile->validate();
 			}
 		}
