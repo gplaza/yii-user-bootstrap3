@@ -43,10 +43,11 @@ class ProfileController extends Controller
 			if ($model->validate() && $profile->validate()) {
 				$model->save();
 				$profile->save();
-				Yii::app()->user->setFlash('profileMessage', UserModule::t("Changes is saved."));
+				Yii::app()->user->setFlash('success', UserModule::t("Changes is saved."));
 				$this->redirect(['/user/profile']);
 			} else {
 				$profile->validate();
+				Yii::app()->user->setFlash('error', UserModule::t('There was an error saving changes'));
 			}
 		}
 
@@ -71,15 +72,18 @@ class ProfileController extends Controller
 			}
 			
 			if (isset($_POST['UserChangePassword'])) {
-				$model->attributes=$_POST['UserChangePassword'];
+				$model->attributes = $_POST['UserChangePassword'];
 				if ($model->validate()) {
 					$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
 					$new_password->password = UserModule::encrypting($model->password);
 					$new_password->activkey = UserModule::encrypting(microtime() . $model->password);
-					$new_password->save();
-					Yii::app()->user->setFlash('profileMessage', UserModule::t("New password is saved."));
-					$this->redirect(["profile"]);
+					if ($new_password->save()) {
+						Yii::app()->user->setFlash('success', UserModule::t("New password is saved."));
+						$this->redirect(["profile"]);						
+					}
 				}
+
+				Yii::app()->user->setFlash('error', UserModule::t('There was an error saving changes'));
 			}
 
 			$this->render('changepassword', ['model' => $model]);

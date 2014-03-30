@@ -52,7 +52,6 @@ $this->menu = [
 		endif;
 	?>
 
-    <?= $form->textFieldControlGroup($model, 'username', ['maxlength' => 20]); ?>
     <?= $form->emailFieldControlGroup($model, 'email', ['maxlength' => 128]); ?> 
 
     <?= BsHtml::submitButton($model->isNewRecord ? UserModule::t('Create') : UserModule::t('Save'), [
