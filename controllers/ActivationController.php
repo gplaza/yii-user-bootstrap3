@@ -14,7 +14,7 @@ class ActivationController extends Controller
 			$find = User::model()->notsafe()->findByAttributes(['email' => $email]);
 			if (isset($find) && $find->status) {
 			    $this->render('/user/message', ['title' => UserModule::t("User activation"), 'content' => UserModule::t("You account is active.")]);
-			} elseif(isset($find->activkey) && ($find->activkey == $activkey)) {
+			} elseif (isset($find->activkey) && ($find->activkey == $activkey)) {
 				$find->activkey = UserModule::encrypting(microtime());
 				$find->status = 1;
 				$find->save();
