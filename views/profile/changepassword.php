@@ -8,10 +8,8 @@ $this->breadcrumbs = [
 
 $this->menu = [
 	((UserModule::isAdmin()) ? ['label' => UserModule::t('Manage Users'), 'url' => ['/user/admin']] : []),
-    ['label' => UserModule::t('List User'), 'url' => ['/user']],
-    ['label' => UserModule::t('Profile'), 'url' => ['/user/profile']],
+    ['label' => UserModule::t('List User'), 'url' => ['/user'], 'visible' => UserModule::isAdmin()],
     ['label' => UserModule::t('Edit'), 'url' => ['edit']],
-    ['label' => UserModule::t('Logout'), 'url' => ['/user/logout']],
 ];
 
 ?>
