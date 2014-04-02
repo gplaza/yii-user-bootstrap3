@@ -52,6 +52,18 @@ class UserModule extends CWebModule
 	 */
 	public $autoLogin = true;
 	
+	/**
+	 * @var boolean
+	 * @desc block registration action
+	 */
+    public $allowAutoRegistration = false;
+
+	/**
+	 * @var boolean
+	 * @desc block recovery password action
+	 */
+    public $allowRecoveryPassword = false;
+
 	public $registrationUrl = ["/user/registration"];
 	public $recoveryUrl = ["/user/recovery/recovery"];
 	public $loginUrl = ["/user/login"];
@@ -134,8 +146,12 @@ class UserModule extends CWebModule
 	public function beforeControllerAction($controller, $action)
 	{
 		if (parent::beforeControllerAction($controller, $action)) {
-			// this method is called before any module controller action is performed
-			// you may place customized code here
+			if ($controller->id == 'registration' && !Yii::app()->getModule('user')->allowAutoRegistration) {
+				throw new CHttpException(401, 'Unauthorized');
+			} elseif ($controller->id == 'recovery' && !Yii::app()->getModule('user')->allowRecoveryPassword) {
+				throw new CHttpException(401, 'Unauthorized');
+			}
+
 			return true;
 		} else {
 			return false;

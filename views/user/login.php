@@ -2,7 +2,7 @@
 
 $this->pageTitle = Yii::app()->name . ' - ' . UserModule::t("Login");
 $this->breadcrumbs = [
-	UserModule::t("Login"),
+    UserModule::t("Login"),
 ];
 ?>
 
@@ -27,14 +27,24 @@ $this->breadcrumbs = [
     <?= $form->textFieldControlGroup($model, 'username', ['maxlength' => 20]); ?>
     <?= $form->passwordFieldControlGroup($model, 'password', ['maxlength' => 128]); ?>
 
-	<div class="form-group">
-		<?= CHtml::link(UserModule::t("Register"), Yii::app()->getModule('user')->registrationUrl); ?> | <?= CHtml::link(UserModule::t("Lost Password?"), Yii::app()->getModule('user')->recoveryUrl); ?>
-	</div>
+    <?php if ($this->module->allowAutoRegistration || $this->module->allowRecoveryPassword): ?>
+        <div class="form-group">
+            <?php if ($this->module->allowAutoRegistration): ?>
+                <?= CHtml::link(UserModule::t("Register"), Yii::app()->getModule('user')->registrationUrl); ?>
+            <?php endif; ?>
+            <?php if ($this->module->allowAutoRegistration && $this->module->allowRecoveryPassword): ?>
+                <?= ' | ' ?>
+            <?php endif; ?>
+            <?php if ($this->module->allowRecoveryPassword): ?>
+                <?= CHtml::link(UserModule::t("Lost Password?"), Yii::app()->getModule('user')->recoveryUrl); ?>                
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
 
     <?= $form->checkBoxControlGroup($model, 'rememberMe', ['maxlength' => 128]); ?> 
 
     <?= BsHtml::submitButton(UserModule::t("Login"), [
-    	'color' => BsHtml::BUTTON_COLOR_PRIMARY]
+        'color' => BsHtml::BUTTON_COLOR_PRIMARY]
     ); ?>
 
 <?php $this->endWidget(); ?>
