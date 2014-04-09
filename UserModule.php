@@ -244,10 +244,19 @@ class UserModule extends CWebModule
 	 */
 	public static function sendMail($email, $subject, $message) {
 		return Yii::app()->mailer->setSubject($subject)
-		    ->addAddress($email)
-		    ->setBody($message)
-		    ->setAltBody($message)
-		    ->send();		
+			->addAddress($email)
+			->setAltBody($message)
+			->setVar('body_title', $subject)
+			->setVar('body_content', $message)
+			->setVar('body_link_url', $this->createAbsoluteUrl('site/index'))
+			->setVar('body_link_title', 'Ir al sitio')
+			->setVar('header_image_url', Yii::app()->params['HEADER_IMAGE_URL'])
+			->setVar('header_title', Yii::app()->params['HEADER_TITLE'])
+			->setVar('body_image_url', Yii::app()->params['BODY_IMAGE_URL'])
+			->setVar('terms_link', CController::createAbsoluteUrl('site/page', ['view' => 'terms']))
+			->setVar('privacy_link', CController::createAbsoluteUrl('site/page', ['view' => 'privacy']))
+			->setVar('unsubscribe_link', CController::createAbsoluteUrl('site/unsubscribe'))
+			->send();		    
 	}
 
     /**
@@ -260,10 +269,19 @@ class UserModule extends CWebModule
         }
 
 		return Yii::app()->mailer->setSubject($subject)
-		    ->addAddress($user->email)
-		    ->setBody($message)
-		    ->setAltBody($message)
-		    ->send();		
+			->addAddress($user->email)
+			->setAltBody($message)
+			->setVar('body_title', $subject)
+			->setVar('body_content', $message)
+			->setVar('body_link_url', $this->createAbsoluteUrl('site/index'))
+			->setVar('body_link_title', 'Ir al sitio')
+			->setVar('header_image_url', Yii::app()->params['HEADER_IMAGE_URL'])
+			->setVar('header_title', Yii::app()->params['HEADER_TITLE'])
+			->setVar('body_image_url', Yii::app()->params['BODY_IMAGE_URL'])
+			->setVar('terms_link', CController::createAbsoluteUrl('site/page', ['view' => 'terms']))
+			->setVar('privacy_link', CController::createAbsoluteUrl('site/page', ['view' => 'privacy']))
+			->setVar('unsubscribe_link', CController::createAbsoluteUrl('site/unsubscribe'))
+			->send();
     }
 	
 	/**
