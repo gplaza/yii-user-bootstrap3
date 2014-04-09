@@ -21,14 +21,13 @@ $this->breadcrumbs = [
 ]); ?>
 
     <p class="help-block"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
+    <div class="col-lg-5">
+        <?= $form->errorSummary($model); ?>
 
-    <?= $form->errorSummary($model); ?>
+        <?= $form->textFieldControlGroup($model, 'username', ['maxlength' => 20]); ?>
+        <?= $form->passwordFieldControlGroup($model, 'password', ['maxlength' => 128]); ?>
 
-    <?= $form->textFieldControlGroup($model, 'username', ['maxlength' => 20]); ?>
-    <?= $form->passwordFieldControlGroup($model, 'password', ['maxlength' => 128]); ?>
-
-    <?php if ($this->module->allowAutoRegistration || $this->module->allowRecoveryPassword): ?>
-        <div class="form-group">
+        <?php if ($this->module->allowAutoRegistration || $this->module->allowRecoveryPassword): ?>
             <?php if ($this->module->allowAutoRegistration): ?>
                 <?= CHtml::link(UserModule::t("Register"), Yii::app()->getModule('user')->registrationUrl); ?>
             <?php endif; ?>
@@ -38,13 +37,12 @@ $this->breadcrumbs = [
             <?php if ($this->module->allowRecoveryPassword): ?>
                 <?= CHtml::link(UserModule::t("Lost Password?"), Yii::app()->getModule('user')->recoveryUrl); ?>                
             <?php endif; ?>
-        </div>
-    <?php endif; ?>
+        <?php endif; ?>
 
-    <?= $form->checkBoxControlGroup($model, 'rememberMe', ['maxlength' => 128]); ?> 
+        <?= $form->checkBoxControlGroup($model, 'rememberMe', ['maxlength' => 128]); ?> 
 
-    <?= BsHtml::submitButton(UserModule::t("Login"), [
-        'color' => BsHtml::BUTTON_COLOR_PRIMARY]
-    ); ?>
-
+        <?= BsHtml::submitButton(UserModule::t("Login"), [
+            'color' => BsHtml::BUTTON_COLOR_PRIMARY]
+        ); ?>     
+    </div>    
 <?php $this->endWidget(); ?>
