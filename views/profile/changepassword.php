@@ -16,29 +16,33 @@ $this->menu = [
 
 <?= BsHtml::pageHeader(UserModule::t("Change password")) ?>
 
-<?php $form = $this->beginWidget('bootstrap.widgets.BsActiveForm', [
-    'id' => 'changepassword-form',
-    // Please note: When you enable ajax validation, make sure the corresponding
-    // controller action is handling ajax validation correctly.
-    // There is a call to performAjaxValidation() commented in generated controller code.
-    // See class documentation of CActiveForm for details on this.
-    'enableAjaxValidation' => false,
-    'htmlOptions' => ['enctype' => 'multipart/form-data'],
-]); ?>
+<div class="row">
+    <div class="col-md-6">
+        <?php $form = $this->beginWidget('bootstrap.widgets.BsActiveForm', [
+            'id' => 'changepassword-form',
+            // Please note: When you enable ajax validation, make sure the corresponding
+            // controller action is handling ajax validation correctly.
+            // There is a call to performAjaxValidation() commented in generated controller code.
+            // See class documentation of CActiveForm for details on this.
+            'enableAjaxValidation' => false,
+            'htmlOptions' => ['enctype' => 'multipart/form-data'],
+        ]); ?>
 
-    <p class="help-block"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
+            <p class="help-block"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
 
-    <?= $form->errorSummary($model); ?>
+            <?= $form->errorSummary($model); ?>
 
-    <?= $form->passwordFieldControlGroup($model, 'oldPassword', ['maxlength' => 128]); ?>    
-    <?= $form->passwordFieldControlGroup($model, 'password', [
-    	'maxlength' => 128,
-    	'help' => UserModule::t("Minimal password length 4 symbols."),
-    ]); ?>
-    <?= $form->passwordFieldControlGroup($model, 'verifyPassword', ['maxlength' => 128]); ?>  
+            <?= $form->passwordFieldControlGroup($model, 'oldPassword', ['maxlength' => 128]); ?>    
+            <?= $form->passwordFieldControlGroup($model, 'password', [
+            	'maxlength' => 128,
+            	'help' => UserModule::t("Minimal password length 4 symbols."),
+            ]); ?>
+            <?= $form->passwordFieldControlGroup($model, 'verifyPassword', ['maxlength' => 128]); ?>  
 
-    <?= BsHtml::submitButton(UserModule::t("Save"), [
-    	'color' => BsHtml::BUTTON_COLOR_PRIMARY]
-    ); ?>
+            <?= BsHtml::submitButton(UserModule::t("Save"), [
+            	'color' => BsHtml::BUTTON_COLOR_PRIMARY]
+            ); ?>
 
-<?php $this->endWidget(); ?>
+        <?php $this->endWidget(); ?>
+    <div>
+</div>
