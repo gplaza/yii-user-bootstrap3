@@ -136,28 +136,44 @@ class AdminController extends Controller
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'index' page.
 	 */
-	public function actionDelete()
+	public function actionDelete($id)
 	{
 		if (Yii::app()->request->isPostRequest) {
 			// we only allow deletion via POST request
-			$model = $this->loadModel();
-			$profile = Profile::model()->findByPk($model->id);
-			
-			// Make sure profile exists
-			if ($profile) {
-				$profile->delete();
+			try {
+				$model = $this->loadModel();
+				$profile = Profile::model()->findByPk($model->id);
+				
+				// Make sure profile exists
+				if ($profile) {
+					$profile->delete();
+				}
+
+				$model->delete();
+
+			    if (!isset($_GET['ajax'])) {
+					Yii::app()->user->setFlash('success', Yii::t('default', 'La operación se realizó con éxito'));
+			    } else {
+					echo $this->showFlashMessage('success', Yii::t('default', 'La operación se realizó con éxito'));
+			    }
+			} catch(CDbException $e) {
+			    if (!isset($_GET['ajax'])) {
+					Yii::app()->user->setFlash('error', Yii::t('default', 'Se ha producido un error al realizar la operación'));
+			    } else {
+					echo $this->showFlashMessage('error', Yii::t('default', 'Se ha producido un error al realizar la operación'));
+ 	
+			    }
 			}
 
-			$model->delete();
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if (!isset($_POST['ajax'])) {
-				$this->redirect(['/user/admin']);
+			if (!isset($_GET['ajax'])) {
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : ['index']);
 			}
 		} else {
-			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+			throw new CHttpException(400, Yii::t('default', 'Request no válido.'));
 		}
 	}
-	
+
 	/**
      * Performs the AJAX validation.
      * @param CModel the model to be validated
