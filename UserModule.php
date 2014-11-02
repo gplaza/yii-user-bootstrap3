@@ -56,13 +56,13 @@ class UserModule extends CWebModule
 	 * @var boolean
 	 * @desc block registration action
 	 */
-    public $allowAutoRegistration = false;
+    	public $allowAutoRegistration = false;
 
 	/**
 	 * @var boolean
 	 * @desc block recovery password action
 	 */
-    public $allowRecoveryPassword = false;
+    	public $allowRecoveryPassword = false;
 
 	public $registrationUrl = ["/user/registration"];
 	public $recoveryUrl = ["/user/recovery/recovery"];
@@ -107,9 +107,9 @@ class UserModule extends CWebModule
 	public $tableProfiles = '{{profiles}}';
 	public $tableProfileFields = '{{profiles_fields}}';
 
-    public $defaultScope = [
-    	'with' => ['profile'],
-    ];
+	public $defaultScope = [
+		'with' => ['profile'],
+	];
 	
 	static private $_user;
 	static private $_users = [];
@@ -123,6 +123,12 @@ class UserModule extends CWebModule
 	 */
 	public $componentBehaviors = [];
 	
+	/**
+	 * @var string
+	 * @desc Theme used for the module
+	 */
+	public $theme = '';	
+	
 	public function init()
 	{
 		// this method is called when the module is being created
@@ -133,6 +139,10 @@ class UserModule extends CWebModule
 			'user.models.*',
 			'user.components.*',
 		]);
+		
+		if (!empty($this->theme)) {
+			Yii::app()->theme = $this->theme;
+		}
 	}
 	
 	public function getBehaviorsFor($componentName) {
