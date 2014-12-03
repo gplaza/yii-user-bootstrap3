@@ -258,14 +258,14 @@ class UserModule extends CWebModule
 			->setAltBody($message)
 			->setVar('body_title', $subject)
 			->setVar('body_content', $message)
-			->setVar('body_link_url', $this->createAbsoluteUrl('site/index'))
+			->setVar('body_link_url', Yii::app()->createAbsoluteUrl('site/index'))
 			->setVar('body_link_title', 'Ir al sitio')
 			->setVar('header_image_url', Yii::app()->params['HEADER_IMAGE_URL'])
 			->setVar('header_title', Yii::app()->params['HEADER_TITLE'])
 			->setVar('body_image_url', Yii::app()->params['BODY_IMAGE_URL'])
-			->setVar('terms_link', CController::createAbsoluteUrl('site/page', ['view' => 'terms']))
-			->setVar('privacy_link', CController::createAbsoluteUrl('site/page', ['view' => 'privacy']))
-			->setVar('unsubscribe_link', CController::createAbsoluteUrl('site/unsubscribe'))
+			->setVar('terms_link', Yii::app()->createAbsoluteUrl('site/page', ['view' => 'terms']))
+			->setVar('privacy_link', Yii::app()->createAbsoluteUrl('site/page', ['view' => 'privacy']))
+			->setVar('unsubscribe_link', Yii::app()->createAbsoluteUrl('site/unsubscribe'))
 			->send();		    
 	}
 
